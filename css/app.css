@@ -1,45 +1,96 @@
-#app {
-    min-height: 100vh;
-    padding: 25px 15px;
+
+/* KESSACI AI VIDEO 2.0 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
     background: #080b14;
-    color: #ffffff;
     font-family: Arial, sans-serif;
 }
 
+#app {
+    min-height: 100vh;
+    padding: 25px 15px;
+    background: linear-gradient(135deg, #080b14, #101a30);
+    color: #ffffff;
+}
+
 .container {
+    width: 100%;
     max-width: 850px;
     margin: 30px auto;
-    padding: 30px;
+    padding: 30px 20px;
     background: #121827;
     border: 1px solid #c9a227;
-    border-radius: 18px;
+    border-radius: 20px;
     text-align: center;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.4);
 }
 
 .container h1 {
-    color: #e5bd50;
+    color: #f4d06f;
     font-size: 28px;
+    margin-bottom: 15px;
 }
 
 .container p {
     color: #cbd5e1;
+    line-height: 1.6;
 }
 
 .container textarea {
     width: 100%;
-    min-height: 140px;
+    min-height: 150px;
     padding: 15px;
     margin: 20px 0;
     border-radius: 12px;
     background: #080b14;
     color: white;
     border: 1px solid #c9a227;
-    box-sizing: border-box;
+    font-size: 16px;
+    resize: vertical;
+}
+
+.container textarea:focus {
+    outline: 2px solid #f4d06f;
 }
 
 .container button {
-    padding: 15px 25px;
+    width: 100%;
+    max-width: 320px;
+    padding: 16px 25px;
     background: linear-gradient(135deg, #f4d06f, #b8860b);
     color: #080b14;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.container button:active {
+    transform: scale(0.98);
+}
+
+#status {
+    margin-top: 20px;
+    color: #f4d06f;
+}
+
+@media (max-width: 600px) {
+    #app {
+        padding: 10px;
+    }
+
+    .container {
+        margin: 15px auto;
+        padding: 25px 15px;
+    }
+
+    .container h1 {
+        font-size: 23px;
+    }
+}
