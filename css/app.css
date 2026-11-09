@@ -1,3 +1,48 @@
 #app {
-	padding: 1em;
+    min-height: 100vh;
+    padding: 25px 15px;
+    background: #080b14;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 30px;
+    background: #121827;
+    border: 1px solid #c9a227;
+    border-radius: 18px;
+    text-align: center;
+}
+
+.container h1 {
+    color: #e5bd50;
+    font-size: 28px;
+}
+
+.container p {
+    color: #cbd5e1;
+}
+
+.container textarea {
+    width: 100%;
+    min-height: 140px;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 12px;
+    background: #080b14;
+    color: white;
+    border: 1px solid #c9a227;
+    box-sizing: border-box;
+}
+
+.container button {
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #f4d06f, #b8860b);
+    color: #080b14;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
 }
