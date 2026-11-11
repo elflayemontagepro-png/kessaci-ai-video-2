@@ -4,6 +4,9 @@ export default class App {
         const app = document.getElementById("app");
         if (!app) return;
 
+        const API_BASE =
+            "https://kessaci-video-api.elflayemontagepro.workers.dev";
+
         app.innerHTML = `
             <div class="container">
                 <h1>🎬 KESSACI AI VIDEO STUDIO 2.0</h1>
@@ -60,6 +63,12 @@ export default class App {
                         🎬 Préparer mon projet
                     </button>
 
+                    <button class="gold-button" id="generateVideo">
+                        🚀 Générer la vidéo
+                    </button>
+
+                    <div id="videoOutput"></div>
+
                     <div id="result" hidden>
                         <h3>✅ Projet préparé</h3>
                         <p id="projectSummary"></p>
@@ -71,6 +80,129 @@ export default class App {
 
                     <button id="saveProject">💾 Enregistrer mon projet</button>
                     <p id="status" role="status">Studio prêt.</p>
+                </section>
+
+                <section class="panel">
+                    <h2>🎵 Studio de création musicale</h2>
+
+                    <label for="musicType">Type de création</label>
+                    <select id="musicType">
+                        <option value="instrumental">Musique instrumentale</option>
+                        <option value="song">Chanson avec voix</option>
+                    </select>
+
+                    <label for="musicTitle">Titre de la musique ou chanson</label>
+                    <input id="musicTitle" placeholder="Titre de ma création">
+
+                    <label for="musicGenre">Style musical</label>
+                    <select id="musicGenre">
+                        <option>Raï algérien moderne</option>
+                        <option>Raï traditionnel</option>
+                        <option>Chaâbi algérien</option>
+                        <option>Kabyle</option>
+                        <option>Amazigh</option>
+                        <option>Andalou</option>
+                        <option>Gnawa</option>
+                        <option>Musique arabe orientale</option>
+                        <option>Musique africaine</option>
+                        <option>Afrobeat</option>
+                        <option>Flamenco</option>
+                        <option>Musique indienne</option>
+                        <option>Musique turque</option>
+                        <option>Musique latino</option>
+                        <option>Salsa</option>
+                        <option>Reggae</option>
+                        <option>Pop</option>
+                        <option>Rock</option>
+                        <option>Hard rock</option>
+                        <option>Rap</option>
+                        <option>Hip-hop</option>
+                        <option>R&B</option>
+                        <option>Jazz</option>
+                        <option>Blues</option>
+                        <option>Funk</option>
+                        <option>Country</option>
+                        <option>Classique</option>
+                        <option>Orchestral</option>
+                        <option>Musique de film</option>
+                        <option>Électronique</option>
+                        <option>House</option>
+                        <option>Techno</option>
+                        <option>Trance</option>
+                        <option>Ambient</option>
+                        <option>Acoustique</option>
+                        <option>Musique du monde</option>
+                    </select>
+
+                    <label for="musicMood">Ambiance</label>
+                    <select id="musicMood">
+                        <option>Émouvante</option>
+                        <option>Puissante</option>
+                        <option>Triste</option>
+                        <option>Joy euse</option>
+                        <option>Énergique</option>
+                        <option>Romantique</option>
+                        <option>Épique</option>
+                        <option>Révoltée</option>
+                        <option>Espoir et liberté</option>
+                        <option>Festive</option>
+                        <option>Calme</option>
+                        <option>Mélancolique</option>
+                    </select>
+
+                    <label for="instruments">Instruments souhaités</label>
+                    <input id="instruments"
+                        placeholder="Flûte, mandoline, violon, guitare, derbouka...">
+
+                    <label for="musicDescription">Description musicale</label>
+                    <textarea id="musicDescription" rows="3"
+                        placeholder="Décris la musique que tu souhaites créer..."></textarea>
+
+                    <div id="songFields">
+                        <h3>🎤 Paramètres de la chanson</h3>
+
+                        <label for="songLanguage">Langue de la chanson</label>
+                        <select id="songLanguage">
+                            <option>Français</option>
+                            <option>Arabe</option>
+                            <option>Darija algérienne</option>
+                            <option>Kabyle</option>
+                            <option>Tamazight</option>
+                            <option>Anglais</option>
+                            <option>Espagnol</option>
+                            <option>Turc</option>
+                            <option>Hindi</option>
+                            <option>Italien</option>
+                            <option>Portugais</option>
+                            <option>Multilingue</option>
+                        </select>
+
+                        <label for="voice">Type de voix</label>
+                        <select id="voice">
+                            <option>Voix masculine grave et chaleureuse</option>
+                            <option>Voix masculine puissante</option>
+                            <option>Voix masculine douce</option>
+                            <option>Voix féminine douce</option>
+                            <option>Voix féminine puissante</option>
+                            <option>Duo homme et femme</option>
+                            <option>Chœur</option>
+                            <option>Rap parlé</option>
+                        </select>
+
+                        <label for="lyrics">Paroles de la chanson</label>
+                        <textarea id="lyrics" rows="7"
+                            placeholder="Écris tes paroles ici, ou décris le sujet de la chanson..."></textarea>
+                    </div>
+
+                    <button class="gold-button" id="generateMusic">
+                        🎵 Créer une musique instrumentale
+                    </button>
+
+                    <button class="gold-button" id="generateSong">
+                        🎤 Créer une chanson avec voix
+                    </button>
+
+                    <div id="musicOutput"></div>
                 </section>
 
                 <section class="panel" id="segmentsPanel" hidden>
@@ -91,12 +223,13 @@ export default class App {
                     <p>3. Choisis une durée allant jusqu'à 30 minutes.</p>
                     <p>4. Choisis le format et le style visuel.</p>
                     <p>5. Prépare ton projet : il sera découpé en séquences de 10 secondes.</p>
-                    <p>6. Télécharge le plan de production ou enregistre ton projet.</p>
-                    <p><strong>Attention :</strong> la génération réelle et l'assemblage MP4 ne sont pas encore activés.</p>
+                    <p>6. Appuie sur Générer la vidéo pour envoyer ta demande au moteur connecté.</p>
+                    <p>7. Utilise le studio musical pour créer une musique ou une chanson.</p>
+                    <p><strong>Important :</strong> les moteurs vidéo et musicaux doivent être configurés sur le serveur pour produire les fichiers.</p>
                 </section>
 
                 <footer>
-                    KESSACI AI VIDEO STUDIO 2.0 · Version gratuite
+                    KESSACI AI VIDEO STUDIO 2.0 · Studio de création
                 </footer>
             </div>
         `;
@@ -322,203 +455,43 @@ export default class App {
             return true;
         }
 
-        $("photo").addEventListener("change", () => {
-            const file = $("photo").files[0];
-            $("photoPreview").innerHTML = "";
+        function getMediaUrl(data) {
+            if (!data || typeof data !== "object") return "";
 
-            if (photoUrl) {
-                URL.revokeObjectURL(photoUrl);
-                photoUrl = null;
+            const keys = [
+                "video_url",
+                "audio_url",
+                "download_url",
+                "output_url",
+                "result_url",
+                "url"
+            ];
+
+            for (const key of keys) {
+                if (typeof data[key] === "string" &&
+                    /^https?:\/\//i.test(data[key])) {
+                    return data[key];
+                }
             }
 
-            if (!file) return;
-
-            if (!file.type.startsWith("image/")) {
-                $("status").textContent = "⚠️ Choisis une image valide.";
-                return;
+            if (data.result && typeof data.result === "object") {
+                return getMediaUrl(data.result);
             }
 
-            photoUrl = URL.createObjectURL(file);
-
-            const img = document.createElement("img");
-            img.src = photoUrl;
-            img.alt = "Aperçu de la photo";
-            img.style.maxWidth = "100%";
-            img.style.maxHeight = "250px";
-            img.style.marginTop = "15px";
-            img.style.borderRadius = "12px";
-
-            $("photoPreview").appendChild(img);
-            $("status").textContent = "✅ Photo sélectionnée.";
-        });
-
-        $("music").addEventListener("change", () => {
-            const file = $("music").files[0];
-
-            $("musicName").textContent = file
-                ? "Musique sélectionnée : " + file.name
-                : "Aucune musique sélectionnée.";
-        });
-
-        $("prepareVideo").addEventListener("click", prepareProject);
-
-        $("copyPrompt").addEventListener("click", () => {
-            copyText(preparedPrompt, $("generatedPrompt"));
-        });
-
-        $("downloadPlan").addEventListener("click", () => {
-            if (!preparedSegments.length) {
-                $("status").textContent = "⚠️ Prépare d'abord ton projet.";
-                return;
+            if (data.output && typeof data.output === "object") {
+                return getMediaUrl(data.output);
             }
 
-            const content = [
-                preparedPrompt,
-                "\n\n================================\n",
-                "PLAN DES SÉQUENCES\n",
-                "================================\n",
-                ...preparedSegments.map(segment =>
-                    "\n\n-------------------------------\n" +
-                    "SÉQUENCE " + segment.number + "\n" +
-                    "Durée : " + segment.duration + " secondes\n" +
-                    "Position : " + formatDuration(segment.start) +
-                    " à " + formatDuration(segment.end) +
-                    "\n\n" + segment.prompt
-                )
-            ].join("");
-
-            downloadText("kessaci-plan-video.txt", content);
-            $("status").textContent = "✅ Plan de production téléchargé.";
-        });
-
-        $("saveProject").addEventListener("click", () => {
-            const description = $("prompt").value.trim();
-
-            if (!description) {
-                $("status").textContent =
-                    "⚠️ Écris une description avant d'enregistrer.";
-                return;
-            }
-
-            if (!preparedSegments.length && !prepareProject()) return;
-
-            const projects = getProjects();
-
-            const project = {
-                id: Date.now(),
-                title: $("projectTitle").value.trim() || "Projet sans titre",
-                prompt: description,
-                generatedPrompt: preparedPrompt,
-                duration: Number($("duration").value),
-                format: $("format").value,
-                style: $("style").value,
-                segments: preparedSegments,
-                date: new Date().toLocaleDateString("fr-FR")
-            };
-
-            projects.push(project);
-
-            if (setProjects(projects)) {
-                $("status").textContent =
-                    "✅ Projet enregistré sur ce téléphone.";
-                showProjects();
-            }
-        });
-
-        function showProjects() {
-            const projects = getProjects();
-            const list = $("projectList");
-
-            list.innerHTML = "";
-
-            if (!projects.length) {
-                list.textContent = "Aucun projet enregistré.";
-                return;
-            }
-
-            const fragment = document.createDocumentFragment();
-
-            projects.forEach(project => {
-                const card = document.createElement("article");
-                const title = document.createElement("h3");
-                const description = document.createElement("p");
-                const details = document.createElement("p");
-                const openButton = document.createElement("button");
-                const removeButton = document.createElement("button");
-
-                title.textContent = project.title;
-                description.textContent = project.prompt;
-
-                const duration = Number(project.duration) || 0;
-                const count = Array.isArray(project.segments)
-                    ? project.segments.length
-                    : Math.ceil(duration / SEGMENT_SECONDS);
-
-                details.textContent =
-                    project.date + " · " +
-                    formatDuration(duration) + " · " +
-                    count + " séquences · Format " + project.format;
-
-                openButton.textContent = "📂 Ouvrir le projet";
-
-                openButton.addEventListener("click", () => {
-                    $("projectTitle").value = project.title;
-                    $("prompt").value = project.prompt;
-                    $("duration").value = String(duration);
-                    $("format").value = project.format;
-                    $("style").value = project.style;
-
-                    preparedPrompt = project.generatedPrompt || "";
-
-                    preparedSegments = Array.isArray(project.segments)
-                        ? project.segments
-                        : buildSegments(
-                            project.prompt,
-                            duration,
-                            project.format,
-                            project.style
-                        );
-
-                    $("generatedPrompt").value = preparedPrompt;
-
-                    $("projectSummary").textContent =
-                        "Durée : " + formatDuration(duration) +
-                        " · " + preparedSegments.length + " séquences.";
-
-                    $("result").hidden = false;
-                    renderSegments(preparedSegments);
-
-                    $("status").textContent = "✅ Projet chargé.";
-                    window.scrollTo(0, 0);
-                });
-
-                removeButton.textContent = "🗑️ Supprimer";
-
-                removeButton.addEventListener("click", () => {
-                    const updated = getProjects().filter(
-                        item => item.id !== project.id
-                    );
-
-                    if (setProjects(updated)) {
-                        $("status").textContent = "Projet supprimé.";
-                        showProjects();
-                    }
-                });
-
-                card.append(
-                    title,
-                    description,
-                    details,
-                    openButton,
-                    removeButton
-                );
-
-                fragment.appendChild(card);
-            });
-
-            list.appendChild(fragment);
+            return "";
         }
 
-        showProjects();
-    }
-}
+        function displayMedia(container, data, type) {
+            container.innerHTML = "";
+
+            const url = getMediaUrl(data);
+
+            if (!url) {
+                const message = document.createElement("p");
+                message.textContent =
+                    "Le serveur a répondu, mais aucun lien de fichier n'a été fourni. Réponse : " +
+            
