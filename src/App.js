@@ -539,7 +539,27 @@ export default class App {
                     if (setProjects(updated)) {
                         $("status").textContent =
                             "Projet supprimé.";
-                        showPro
+                          showProjects();
+                    }
+                });
+
+                card.append(
+                    title,
+                    description,
+                    details,
+                    openButton,
+                    removeButton
+                );
+
+                fragment.appendChild(card);
+            });
+
+            list.appendChild(fragment);
+        }
+
+        showProjects();
+    }
+    }                      showPro
                                                 showProjects();
                     }
                 });
