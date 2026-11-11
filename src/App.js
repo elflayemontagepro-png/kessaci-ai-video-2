@@ -559,5 +559,25 @@ export default class App {
         }
 
         showProjects();
+                    }
+                });
+
+                card.append(
+                    title,
+                    description,
+                    details,
+                    openButton,
+                    removeButton
+                );
+
+                fragment.appendChild(card);
+            });
+
+            list.appendChild(fragment);
+        }
+
+        showProjects();
+    }
+}
     }
 }
