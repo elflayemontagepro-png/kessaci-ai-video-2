@@ -2,7 +2,6 @@
 export default class App {
     static main() {
         const app = document.getElementById("app");
-
         if (!app) return;
 
         app.innerHTML = `
@@ -70,10 +69,7 @@ export default class App {
                         <button id="downloadPlan">📥 Télécharger le plan complet</button>
                     </div>
 
-                    <button id="saveProject">
-                        💾 Enregistrer mon projet
-                    </button>
-
+                    <button id="saveProject">💾 Enregistrer mon projet</button>
                     <p id="status" role="status">Studio prêt.</p>
                 </section>
 
@@ -96,7 +92,7 @@ export default class App {
                     <p>4. Choisis le format et le style visuel.</p>
                     <p>5. Prépare ton projet : il sera découpé en séquences de 10 secondes.</p>
                     <p>6. Télécharge le plan de production ou enregistre ton projet.</p>
-                    <p><strong>Attention :</strong> la génération réelle des séquences et leur assemblage en MP4 seront activés après connexion d'un moteur vidéo compatible.</p>
+                    <p><strong>Attention :</strong> la génération réelle et l'assemblage MP4 ne sont pas encore activés.</p>
                 </section>
 
                 <footer>
@@ -142,9 +138,7 @@ export default class App {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = seconds % 60;
 
-            if (minutes === 0) {
-                return remainingSeconds + " secondes";
-            }
+            if (minutes === 0) return remainingSeconds + " secondes";
 
             if (remainingSeconds === 0) {
                 return minutes + (minutes === 1 ? " minute" : " minutes");
@@ -179,9 +173,7 @@ export default class App {
                     textarea.focus();
                     textarea.select();
 
-                    const copied = document.execCommand("copy");
-
-                    if (!copied) {
+                    if (!document.execCommand("copy")) {
                         throw new Error("Copie impossible");
                     }
                 }
@@ -201,29 +193,23 @@ export default class App {
 
             for (let i = 0; i < total; i++) {
                 const start = i * SEGMENT_SECONDS;
-                const end = Math.min(
-                    start + SEGMENT_SECONDS,
-                    totalSeconds
-                );
+                const end = Math.min(start + SEGMENT_SECONDS, totalSeconds);
 
                 const number = i + 1;
 
                 const segmentPrompt =
                     "KESSACI AI VIDEO STUDIO 2.0\n\n" +
                     "Séquence : " + number + " sur " + total + "\n" +
-                    "Durée de cette séquence : " +
-                    (end - start) + " secondes\n" +
-                    "Position dans le projet : " +
-                    formatDuration(start) + " à " +
+                    "Durée : " + (end - start) + " secondes\n" +
+                    "Position : " + formatDuration(start) + " à " +
                     formatDuration(end) + "\n\n" +
                     "Description générale :\n" + description + "\n\n" +
                     "Style visuel : " + style + "\n" +
                     "Format : " + format + "\n\n" +
-                    "Consignes : créer uniquement cette séquence de la vidéo. " +
+                    "Consignes : créer uniquement cette séquence. " +
                     "Respecter le sujet, les personnages, les lieux et " +
                     "la cohérence visuelle avec les séquences précédentes. " +
-                    "Prévoir une transition naturelle vers la séquence suivante. " +
-                    "Ne pas modifier le thème principal du projet.";
+                    "Prévoir une transition naturelle vers la séquence suivante.";
 
                 segments.push({
                     number,
@@ -250,13 +236,12 @@ export default class App {
                 const description = document.createElement("p");
                 const copyButton = document.createElement("button");
 
-                heading.textContent =
-                    "🎬 Séquence " + segment.number;
+                heading.textContent = "🎬 Séquence " + segment.number;
 
                 timing.textContent =
                     formatDuration(segment.start) + " → " +
-                    formatDuration(segment.end) +
-                    " · " + segment.duration + " secondes";
+                    formatDuration(segment.end) + " · " +
+                    segment.duration + " secondes";
 
                 description.textContent =
                     "Demande de génération prête à être envoyée au moteur vidéo.";
@@ -278,14 +263,12 @@ export default class App {
             });
 
             list.appendChild(fragment);
-
             $("segmentsPanel").hidden = false;
+
             $("segmentSummary").textContent =
-                segments.length + " séquences préparées. " +
-                "Durée totale : " +
+                segments.length + " séquences préparées. Durée totale : " +
                 formatDuration(segments.reduce(
-                    (sum, item) => sum + item.duration,
-                    0
+                    (sum, item) => sum + item.duration, 0
                 )) + ".";
         }
 
@@ -303,32 +286,25 @@ export default class App {
             const style = $("style").value;
 
             if (!Number.isFinite(duration) || duration <= 0) {
-                $("status").textContent =
-                    "⚠️ Choisis une durée valide.";
+                $("status").textContent = "⚠️ Choisis une durée valide.";
                 return false;
             }
 
             preparedSegments = buildSegments(
-                description,
-                duration,
-                format,
-                style
+                description, duration, format, style
             );
 
             preparedPrompt =
                 "KESSACI AI VIDEO STUDIO 2.0\n\n" +
                 "Projet : " +
                 ($("projectTitle").value.trim() || "Projet sans titre") +
-                "\n" +
-                "Description : " + description + "\n" +
-                "Durée totale : " + formatDuration(duration) + "\n" +
-                "Nombre de séquences : " +
-                preparedSegments.length + "\n" +
-                "Durée par séquence : maximum 10 secondes\n" +
-                "Format : " + format + "\n" +
-                "Style : " + style + "\n\n" +
-                "Le projet est organisé en séquences indépendantes " +
-                "pour faciliter la génération et le montage final.";
+                "\nDescription : " + description +
+                "\nDurée totale : " + formatDuration(duration) +
+                "\nNombre de séquences : " + preparedSegments.length +
+                "\nDurée par séquence : maximum 10 secondes" +
+                "\nFormat : " + format +
+                "\nStyle : " + style +
+                "\n\nLe projet est organisé en séquences indépendantes.";
 
             $("generatedPrompt").value = preparedPrompt;
 
@@ -338,7 +314,6 @@ export default class App {
                 " séquences de 10 secondes maximum.";
 
             $("result").hidden = false;
-
             renderSegments(preparedSegments);
 
             $("status").textContent =
@@ -359,8 +334,7 @@ export default class App {
             if (!file) return;
 
             if (!file.type.startsWith("image/")) {
-                $("status").textContent =
-                    "⚠️ Choisis une image valide.";
+                $("status").textContent = "⚠️ Choisis une image valide.";
                 return;
             }
 
@@ -394,15 +368,14 @@ export default class App {
 
         $("downloadPlan").addEventListener("click", () => {
             if (!preparedSegments.length) {
-                $("status").textContent =
-                    "⚠️ Prépare d'abord ton projet.";
+                $("status").textContent = "⚠️ Prépare d'abord ton projet.";
                 return;
             }
 
             const content = [
                 preparedPrompt,
-                "\n\n================================",
-                "PLAN DES SÉQUENCES",
+                "\n\n================================\n",
+                "PLAN DES SÉQUENCES\n",
                 "================================\n",
                 ...preparedSegments.map(segment =>
                     "\n\n-------------------------------\n" +
@@ -414,13 +387,8 @@ export default class App {
                 )
             ].join("");
 
-            downloadText(
-                "kessaci-plan-video.txt",
-                content
-            );
-
-            $("status").textContent =
-                "✅ Plan de production téléchargé.";
+            downloadText("kessaci-plan-video.txt", content);
+            $("status").textContent = "✅ Plan de production téléchargé.";
         });
 
         $("saveProject").addEventListener("click", () => {
@@ -432,17 +400,13 @@ export default class App {
                 return;
             }
 
-            if (!preparedSegments.length) {
-                const ready = prepareProject();
-                if (!ready) return;
-            }
+            if (!preparedSegments.length && !prepareProject()) return;
 
             const projects = getProjects();
 
             const project = {
                 id: Date.now(),
-                title: $("projectTitle").value.trim() ||
-                    "Projet sans titre",
+                title: $("projectTitle").value.trim() || "Projet sans titre",
                 prompt: description,
                 generatedPrompt: preparedPrompt,
                 duration: Number($("duration").value),
@@ -493,8 +457,7 @@ export default class App {
                 details.textContent =
                     project.date + " · " +
                     formatDuration(duration) + " · " +
-                    count + " séquences · Format " +
-                    project.format;
+                    count + " séquences · Format " + project.format;
 
                 openButton.textContent = "📂 Ouvrir le projet";
 
@@ -506,6 +469,7 @@ export default class App {
                     $("style").value = project.style;
 
                     preparedPrompt = project.generatedPrompt || "";
+
                     preparedSegments = Array.isArray(project.segments)
                         ? project.segments
                         : buildSegments(
@@ -516,16 +480,15 @@ export default class App {
                         );
 
                     $("generatedPrompt").value = preparedPrompt;
+
                     $("projectSummary").textContent =
                         "Durée : " + formatDuration(duration) +
-                        " · " + preparedSegments.length +
-                        " séquences.";
+                        " · " + preparedSegments.length + " séquences.";
 
                     $("result").hidden = false;
                     renderSegments(preparedSegments);
 
-                    $("status").textContent =
-                        "✅ Projet chargé.";
+                    $("status").textContent = "✅ Projet chargé.";
                     window.scrollTo(0, 0);
                 });
 
@@ -536,10 +499,8 @@ export default class App {
                         item => item.id !== project.id
                     );
 
-
                     if (setProjects(updated)) {
-                        $("status").textContent =
-                            "Projet supprimé.";
+                        $("status").textContent = "Projet supprimé.";
                         showProjects();
                     }
                 });
@@ -559,70 +520,5 @@ export default class App {
         }
 
         showProjects();
-    }
-}
-
-                        $("status").textContent =
-                            "Projet supprimé.";
-                          showProjects();
-                    }
-                });
-
-                card.append(
-                    title,
-                    description,
-                    details,
-                    openButton,
-                    removeButton
-                );
-
-                fragment.appendChild(card);
-            });
-
-            list.appendChild(fragment);
-        }
-
-        showProjects();
-    }
-    }                      showPro
-                                                showProjects();
-                    }
-                });
-
-                card.append(
-                    title,
-                    description,
-                    details,
-                    openButton,
-                    removeButton
-                );
-
-                fragment.appendChild(card);
-            });
-
-            list.appendChild(fragment);
-        }
-
-        showProjects();
-                    }
-                });
-
-                card.append(
-                    title,
-                    description,
-                    details,
-                    openButton,
-                    removeButton
-                );
-
-                fragment.appendChild(card);
-            });
-
-            list.appendChild(fragment);
-        }
-
-        showProjects();
-    }
-}
     }
 }
